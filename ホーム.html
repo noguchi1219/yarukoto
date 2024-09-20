@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ウェブサイト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0; /* 外側の余白 */
+            padding: 0;
+            font-size: 24px;
+            color: rgb(127, 84, 28);
+        }
+        header, footer {
+            background-color: #f0f0f0; /* ヘッダーとフッターの背景色を設定 */
+            color: rgb(0, 0, 0); /* 文字の色を設定 */
+            text-align: center;
+            padding: 10px 0;
+        }
+        header h1 {
+            background-color: #f7e7d0; /* タイトルの背景色（ふわふわした色） */
+            border: 2px solid #e0d5c8; /* タイトルの枠（柔らかい色） */
+            padding: 10px; /* 枠の大きさ */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 軽い影を追加 */
+            color: #000000; /* 文字の色を黒に設定 */
+            font-family: Arial, sans-serif; /* フォントファミリーをArialに設定 */
+            margin: 0; /* マージンをリセット */
+        }
+        nav {
+            margin-top: 20px; /* タイトルとナビゲーションの間に20pxの余白を追加 */
+        }
+        main {
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        nav ul {
+            list-style-type: none; /* デフォルトのリストスタイルを無効にする */
+            padding: 0; /* デフォルトのパディングを無効にする */
+            margin: 0; /* デフォルトのマージンを無効にする */
+        }
+        nav li {
+            margin-bottom: 15px; /* リストアイテム間に15pxの下マージンを追加 */
+        }
+        nav a {
+            color: #000000; /* リンクの文字色を黒に設定 */
+            text-decoration: none; /* 通常の下線なし */
+            padding: 10px 20px; /* リンクの内側の余白（上下左右） */
+            background-color: #f0e7d0; /* 文字周りの背景色（柔らかいトーン） */
+            border-radius: 20px; /* 背景色を角丸にする */
+            font-size: 24px; /* フォントサイズ */
+            display: inline; /* リンクをインライン要素にして、文字周りだけに背景色が適用されるようにする */
+        }
+        nav a:hover {
+            color: #000000; /* ホバー時の文字色も黒に設定 */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>やる事共有</h1>
+        <nav>
+            <ul>
+                <li><a href="やる事追加.html">やる事を追加する</a></li>
+                <li><a href="やる事確認.html">今日のやる事を確認する</a></li>
+                <li><a href="終わったやる事.html">終わったやる事を確認する</a></li>
+                <li><a href="いらないやる事.html">いらないやる事を消す</a></li>
+            </ul>
+        </nav>
+    </header>
+</body>
+</html>

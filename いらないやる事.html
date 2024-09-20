@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>いらないやること</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f2eb; /* 淡いクリーム色 */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #8e735b; /* 濃いベージュオレンジ */
+            text-align: center;
+        }
+
+        .container {
+            background: #e7e3bf; /* 基本のクリーム色 */
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .task-list {
+            background-color: #ffffff; /* 白色の背景 */
+            color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-sizing: border-box; /* パディングとボーダーを含む */
+        }
+
+        .task-list p {
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #000; /* 黒色の文字 */
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* 横並びに配置 */
+        }
+
+        .task-list button {
+            padding: 6px 12px;
+            font-size: 14px;
+            background-color: #735c4f; /* 濃いベージュオレンジ */
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .task-list button:hover {
+            background-color: #5b4f47; /* さらに濃いベージュブラウン */
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #735c4f; /* 濃いベージュオレンジ */
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 5px;
+        }
+
+        .action-buttons button:hover {
+            background-color: #5b4f47; /* さらに濃いベージュブラウン */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>いらないやること</h1>
+        <div class="task-list" id="taskList"></div>
+        <div class="action-buttons">
+            <button onclick="location.href='ホーム.html'">ホームに戻る</button>
+        </div>
+    </div>
+    <script>
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+            taskList.innerHTML = ''; // 既存のタスクをクリア
+
+            tasks.forEach((task, index) => {
+                const taskElement = document.createElement('p');
+                taskElement.textContent = task.text; // タスクのテキストを表示
+                taskElement.style.backgroundColor = task.color; // 保存された色を適用
+                
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = '削除';
+                deleteButton.onclick = function() {
+                    deleteTask(index);
+                };
+                taskElement.appendChild(deleteButton);
+                
+                taskList.appendChild(taskElement);
+            });
+        }
+
+        function deleteTask(index) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.splice(index, 1); // 指定したインデックスのタスクを削除
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+
+            displayTasks(); // 削除後にタスクを再表示
+        }
+
+        displayTasks(); // ページが読み込まれた時にタスクを表示
+    </script>
+</body>
+</html>

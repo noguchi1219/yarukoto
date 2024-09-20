@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タスクリスト</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f2eb; /* 淡いクリーム色 */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #8e735b; /* 濃いベージュオレンジ */
+            text-align: center;
+        }
+
+        .container {
+            background: #e7e3bf; /* 基本のクリーム色 */
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .task-form {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .task-form input[type="text"] {
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 25px;
+            border: 1px solid #8e735b; /* 濃いベージュオレンジの境界線 */
+            width: 70%;
+            margin-right: 10px;
+            transition: box-shadow 0.3s ease;
+            color: #5b4f47; /* 濃いブラウン */
+        }
+
+        .task-form input[type="text"]:focus {
+            box-shadow: 0 0 8px rgba(142, 115, 91, 0.3); /* フォーカス時の影 */
+            border-color: #8e735b;
+            outline: none;
+        }
+
+        .task-form select {
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 25px;
+            border: 1px solid #8e735b;
+            background-color: #fff;
+            color: #5b4f47;
+            margin-right: 10px;
+            width: 20%;
+        }
+
+        .task-form button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #8e735b; /* 濃いベージュオレンジ */
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .task-form button:hover {
+            background-color: #735c4f; /* さらに濃いベージュオレンジ */
+        }
+
+        .task-list {
+            background-color: #ffffff; /* 白色の背景 */
+            color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-sizing: border-box; /* パディングとボーダーを含む */
+        }
+
+        .task-list p {
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 10px;
+            position: relative;
+            color: #000; /* 黒色の文字 */
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* 横並びに配置 */
+        }
+
+        .task-list button {
+            padding: 6px 12px;
+            font-size: 14px;
+            background-color: #735c4f; /* 濃いベージュオレンジ */
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .task-list button:hover {
+            background-color: #5b4f47; /* さらに濃いベージュブラウン */
+        }
+
+        .action-buttons, .filter-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .action-buttons button, .filter-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #8e735b; /* 濃いベージュオレンジ */
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-buttons button:hover, .filter-buttons button:hover {
+            background-color: #735c4f; /* さらに濃いベージュオレンジ */
+        }
+
+        .filter-buttons {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>やること</h1>
+        <div class="task-form">
+            <input type="text" id="taskInput" placeholder="やる事を入力">
+            <select id="taskColor">
+                <option value="#f8d7da">赤</option>
+                <option value="#d4edda">緑</option>
+                <option value="#cce5ff">青</option>
+                <option value="#fff3cd">黄</option>
+                <option value="#e2e3e5">灰</option>
+            </select>
+            <button onclick="addTask()">追加</button>
+        </div>
+        <div class="filter-buttons">
+            <button onclick="filterTasks('#f8d7da')">赤</button>
+            <button onclick="filterTasks('#d4edda')">緑</button>
+            <button onclick="filterTasks('#cce5ff')">青</button>
+            <button onclick="filterTasks('#fff3cd')">黄</button>
+            <button onclick="filterTasks('#e2e3e5')">灰</button>
+            <button onclick="filterTasks('')">すべて表示</button>
+        </div>
+        <div class="task-list" id="taskList">
+            <!-- タスクリストがここに表示されます -->
+        </div>
+        <div class="action-buttons">
+            <button onclick="goHome()">ホームに戻る</button>
+            <button onclick="clearAllTasks()">全部終わった</button>
+        </div>
+    </div>
+
+    <script>
+        function displayTasks(filterColor = '') {
+            const taskList = document.getElementById('taskList');
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            
+            taskList.innerHTML = ''; // 既存のタスクをクリア
+            
+            tasks.forEach((task, index) => {
+                if (filterColor === '' || task.color === filterColor) {
+                    const taskElement = document.createElement('p');
+                    taskElement.textContent = task.text; // タスクのテキストを表示
+                    taskElement.style.backgroundColor = task.color; // 保存された色を適用
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = '終わった';
+                    deleteButton.onclick = function() {
+                        removeTask(index);
+                    };
+                    taskElement.appendChild(deleteButton);
+                    
+                    taskList.appendChild(taskElement);
+                }
+            });
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskColor = document.getElementById('taskColor').value;
+            const taskText = taskInput.value.trim();
+            
+            if (taskText === '') {
+                alert('やる事を入力してください');
+                return;
+            }
+
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.push({ text: taskText, color: taskColor });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            taskInput.value = ''; // 入力フィールドをクリア
+            displayTasks(); // タスクを再表示
+        }
+
+        function removeTask(index) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.splice(index, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            displayTasks(); // タスクを再表示
+        }
+
+        function filterTasks(color) {
+            displayTasks(color);
+        }
+
+        function clearAllTasks() {
+            localStorage.removeItem('tasks');
+            displayTasks(); // タスクを再表示
+        }
+
+        function goHome() {
+            window.location.href = 'ホーム.html'; // ホームページのURLに変更
+        }
+
+        // ページ読み込み時にタスクを表示
+        window.onload = function() {
+            displayTasks();
+        };
+    </script>
+</body>
+</html>

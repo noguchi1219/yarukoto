@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>やること追加</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f2eb; /* 淡いクリーム色 */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #8e735b; /* 濃いベージュオレンジ */
+            text-align: center;
+        }
+
+        .container {
+            background: #e7e3bf; /* 基本のクリーム色 */
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .task-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .task-form input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 22px); /* ボタンの横幅に合わせる */
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-picker button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .color-picker button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-picker .red {
+            background-color: #ff8a8a; /* 薄い赤 */
+        }
+
+        .color-picker .blue {
+            background-color: #a0d4ff; /* 薄い青 */
+        }
+
+        .color-picker .green {
+            background-color: #a4e5a2; /* 薄い緑 */
+        }
+
+        .color-picker .yellow {
+            background-color: #fff3b0; /* 薄い黄 */
+        }
+
+        .color-picker .purple {
+            background-color: #d6a4e3; /* 薄い紫 */
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #735c4f; /* 濃いベージュオレンジ */
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .action-buttons button:hover {
+            background-color: #5b4f47; /* さらに濃いベージュブラウン */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>やること追加</h1>
+        <div class="task-form">
+            <input type="text" id="taskInput" placeholder="やることを入力">
+            <div class="color-picker">
+                <button class="red" onclick="addTask('#ff8a8a')"></button>
+                <button class="blue" onclick="addTask('#a0d4ff')"></button>
+                <button class="green" onclick="addTask('#a4e5a2')"></button>
+                <button class="yellow" onclick="addTask('#fff3b0')"></button>
+                <button class="purple" onclick="addTask('#d6a4e3')"></button>
+            </div>
+            <div class="action-buttons">
+                <button onclick="location.href='ホーム.html'">ホームに戻る</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function addTask(color) {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+
+            if (taskText === '') {
+                alert('やることを入力してください');
+                return;
+            }
+
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.push({ text: taskText, color: color });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+
+            taskInput.value = ''; // 入力フィールドをクリア
+        }
+    </script>
+</body>
+</html>
